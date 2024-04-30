@@ -48,5 +48,10 @@ function sync_project_test_plugin.generic_greet()
 	print("Hello, test-sync!")
 end
 
+function sync_project_test_plugin.init_project()
+	local init_project = require("sync_project_test_plugin.init_project")
+	init_project.init()
+end
+
 sync_project_test_plugin.options = nil
 return sync_project_test_plugin

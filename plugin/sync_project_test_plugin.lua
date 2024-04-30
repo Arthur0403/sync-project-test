@@ -15,3 +15,4 @@ vim.g.loaded_sync_project_test_plugin = 1
 local sync_project_test_plugin = require("sync_project_test_plugin")
 
 vim.api.nvim_create_user_command("TestSync", sync_project_test_plugin.generic_greet, {})
+vim.api.nvim_create_user_command("InitProject", sync_project_test_plugin.init_project, {})
