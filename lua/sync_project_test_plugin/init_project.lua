@@ -117,6 +117,6 @@ local M = {
 }
 -- Вызов функции с путем к директории
 -- self.createDirectoryIfNotExists(".nvim_config")
-local instanceM = M
-instanceM:init()
--- return M
+-- local instanceM = M
+-- instanceM:init()
+return M
