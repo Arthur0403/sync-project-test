@@ -10,15 +10,18 @@ end
 
 -- Предполагается, что эта функция должна вызываться пользователями явно для настройки этого
 -- плагина
+-- TODO: у моего плагина будет какая-то настройка?
 function sync_project_test_plugin.setup(options)
 	-- избегайте устанавливать глобальные значения вне этой функции. Глобальное состояние
 	-- мутации трудно выполнять отладку и тестирование, поэтому наличие их в один
-	-- функция/модуль делает его легче рассуждать о возможных изменениях
+	-- function/module делает его легче рассуждать о возможных изменениях
 	sync_project_test_plugin.options = with_defaults(options)
 
 	-- выполняйте здесь любые действия, необходимые для запуска вашего плагина, например, создавайте команды и
 	-- сопоставления, которые зависят от значений, переданных в параметрах
-	vim.api.nvim_create_user_command("MyAwesomePluginGreet", sync_project_test_plugin.greet, {})
+	if sync_project_test_plugin.options.name == "John Doe" then
+		vim.api.nvim_create_user_command("MyAwesomePluginGreet", sync_project_test_plugin.greet, {})
+	end
 end
 
 function sync_project_test_plugin.is_configured()
@@ -27,12 +30,13 @@ end
 
 -- Это функция, которая будет использоваться вне кода этого плагина.
 -- Думайте об этом как о публичном API
+-- TODO: не понятно пока, зачем нужно?
 function sync_project_test_plugin.greet()
 	if not sync_project_test_plugin.is_configured() then
 		return
 	end
 
-	-- постарайтесь сосредоточить всю тяжелую логику на чистых функциях/модулях, которые не
+	-- постарайтесь сосредоточить всю тяжелую логику на чистых functions/modules, которые не
 	-- зависит от API-интерфейсов Neovim. Это облегчает их тестирование
 	local greeting = sync_project_test_module.greeting(sync_project_test_plugin.options.name)
 	print(greeting)
