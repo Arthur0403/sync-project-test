@@ -27,7 +27,13 @@ local M = {
 
 		for key, value in pairs(answersQuestions) do
 			-- Вводим вопрос в терминал и ожидаем ответ
-			vim.api.nvim_input("i" .. key .. ": ")
+			-- vim.api.nvim_input("i" .. key .. ": ")
+			vim.api.nvim_command("normal i" .. key .. ": ")
+			vim.api.nvim_command("normal <Esc>")
+			vim.api.nvim_command("normal gg")
+			vim.api.nvim_command("normal O")
+			vim.api.nvim_command("normal i")
+			vim.api.nvim_command("normal <Esc>")
 			answersQuestions[key] = vim.fn.input()
 		end
 
