@@ -48,8 +48,7 @@ local M = {
 
 		for key, value in pairs(answersQuestions) do
 			print(key .. ":")
-			-- Используем io.input() для ожидания ввода пользователя и удаляем символ новой строки
-			answersQuestions[key] = string.gsub(io.input(), "\n", "")
+			answersQuestions[key] = io.read("*line")
 		end
 
 		return answersQuestions
