@@ -1,19 +1,3 @@
--- local lfsExists, lfs = pcall(function()
--- 	require("lfs")
--- end)
--- TODO: вынести куда-нибудь в проверки
--- if lfsExists then
--- 	print("Модуль LFS установлен.")
--- -- Здесь можно использовать функции LFS
--- else
--- 	print("Модуль LFS не установлен.")
--- 	-- Обработка ситуации, когда LFS не установлен
--- end
-local lfs = require("lfs")
-if not lfs then
-	error("Модуль lfs не найден. Убедитесь, что он установлен.")
-end
-
 local M = {
 	FILENAME = "config.ini",
 	DIRNAME = ".nvim_config",
@@ -30,9 +14,8 @@ local M = {
 
 	init = function(self)
 		local fileData = self.askQuestion()
-		-- vim.pretty_print(self.DIRNAME)
-		if not self.dirExists(self.DIRNAME) then
-			self.createDirectoryIfNotExists(self.DIRNAME)
+		if not self:dirExists(self.DIRNAME) then
+			self:createDirectoryIfNotExists(self.DIRNAME)
 			self:writeFile(fileData)
 			-- добавим папку конфига в .gitignore усли он существует
 
@@ -94,25 +77,26 @@ local M = {
 		end
 	end,
 
-	dirExists = function(path)
-		-- vim.pretty_print(path)
-		print(path)
-		local attr = lfs.attributes(path)
-		if attr and attr.mode == "directory" then
-			return true
-		end
-		return false
+	dirExists = function(self, path)
+		-- "/" работает как на Unix, так и на Windows
+		return self.exists(path .. "/")
 	end,
 
-	createDirectoryIfNotExists = function(directoryPath)
-		-- Пытаемся создать директорию
-		local success, errorMessage = lfs.mkdir(directoryPath)
-		if not success then
-			-- Если создание директории не удалось, выбрасываем исключение
-			error("Не удалось создать директорию: " .. errorMessage)
+	exists = function(file)
+		local ok, err, code = os.rename(file, file)
+		if not ok then
+			if code == 13 then
+				-- Ошибка разрешений, но файл существует
+				return true
+			end
 		end
-		-- Директория успешно создана
-		return true
+		return ok, err
+	end,
+
+	createDirectoryIfNotExists = function(self, directoryPath)
+		if not self:dirExists(directoryPath) then
+			os.execute("mkdir " .. directoryPath)
+		end
 	end,
 }
 -- Вызов функции с путем к директории
