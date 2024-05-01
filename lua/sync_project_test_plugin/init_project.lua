@@ -13,20 +13,35 @@ local M = {
 	GITIGNORE = ".gitignore",
 
 	init = function(self)
-		local fileData = self.askQuestion()
+		-- Открываем терминал
+		vim.api.nvim_command("term")
+
+		-- Задаем вопросы и сохраняем ответы в файлы
+		local answersQuestions = {
+			project_name = "",
+			local_path = "",
+			remote_path = "",
+			host_user_name = "",
+			host = "",
+		}
+
+		for key, value in pairs(answersQuestions) do
+			-- Вводим вопрос в терминал и ожидаем ответ
+			vim.api.nvim_input("i" .. key .. ": ")
+			answersQuestions[key] = vim.fn.input()
+		end
+
+		-- Проверяем существование директории и создаем, если необходимо
 		if not self:dirExists(self.DIRNAME) then
 			self:createDirectoryIfNotExists(self.DIRNAME)
-			self:writeFile(fileData)
-			-- добавим папку конфига в .gitignore усли он существует
+		end
 
-			if self.fileExists(self.GITIGNORE) then
-				self:addGitIgnore(self.GITIGNORE)
-			end
-		else
-			self:writeFile(fileData)
-			if self.fileExists(self.GITIGNORE) then
-				self:addGitIgnore(self.GITIGNORE)
-			end
+		-- Записываем ответы в файл
+		self:writeFile(answersQuestions)
+
+		-- Добавляем папку конфига в.gitignore, если она существует
+		if self.fileExists(self.GITIGNORE) then
+			self:addGitIgnore(self.GITIGNORE)
 		end
 	end,
 
