@@ -14,7 +14,7 @@ local M = {
 
 	init = function(self)
 		-- Открываем терминал
-		vim.api.nvim_command("term")
+		vim.api.nvim_command("vsplit | terminal")
 
 		-- Задаем вопросы и сохраняем ответы в файлы
 		local answersQuestions = {
