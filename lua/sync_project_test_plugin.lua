@@ -50,7 +50,7 @@ end
 
 function sync_project_test_plugin.init_project()
 	local init_project = require("sync_project_test_plugin.init_project")
-	init_project.init()
+	init_project:init()
 end
 
 sync_project_test_plugin.options = nil
