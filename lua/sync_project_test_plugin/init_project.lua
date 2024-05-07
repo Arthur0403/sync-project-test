@@ -35,7 +35,7 @@ local M = {
 		for key, value in pairs(answersQuestions) do
 			-- Вводим вопрос в терминал и ожидаем ответ
 			vim.api.nvim_command("echo '" .. key .. "'")
-			local answer = vim.fn.input()
+			local answer = vim.fn.input("input: ")
 			answersQuestions[key] = answer
 		end
 
