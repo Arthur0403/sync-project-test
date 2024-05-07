@@ -34,8 +34,8 @@ local M = {
 
 		for key, value in pairs(answersQuestions) do
 			-- Вводим вопрос в терминал и ожидаем ответ
-			vim.api.nvim_command("echo '" .. key .. "'")
-			local answer = vim.fn.input("input: ")
+			-- vim.api.nvim_command("echo '" .. key .. "'")
+			local answer = vim.fn.input(key .. ": ")
 			answersQuestions[key] = answer
 		end
 
@@ -54,6 +54,8 @@ local M = {
 		if self.fileExists(self.GITIGNORE) then
 			self:addGitIgnore(self.GITIGNORE)
 		end
+		local successMessage = "Success inited! Good luck!"
+		vim.api.nvim_command("echo '" .. successMessage .. "'")
 	end,
 
 	addGitIgnore = function(self, gitignore)
