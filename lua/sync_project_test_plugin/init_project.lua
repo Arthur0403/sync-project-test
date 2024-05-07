@@ -14,7 +14,14 @@ local M = {
 
 	init = function(self)
 		-- Открываем терминал
-		vim.api.nvim_command("vsplit | terminal")
+		-- Разделить буфер по горизонтали
+		vim.api.nvim_command("split")
+
+		-- Открыть терминал в нижней части
+		vim.api.nvim_command("term")
+
+		-- Перейти в терминал
+		vim.api.nvim_command("wincmd j")
 
 		-- Задаем вопросы и сохраняем ответы в файлы
 		local answersQuestions = {
@@ -27,15 +34,13 @@ local M = {
 
 		for key, value in pairs(answersQuestions) do
 			-- Вводим вопрос в терминал и ожидаем ответ
-			-- vim.api.nvim_input("i" .. key .. ": ")
-			vim.api.nvim_command("normal i" .. key .. ": ")
-			vim.api.nvim_command("normal <Esc>")
-			vim.api.nvim_command("normal gg")
-			vim.api.nvim_command("normal O")
-			vim.api.nvim_command("normal i")
-			vim.api.nvim_command("normal <Esc>")
-			answersQuestions[key] = vim.fn.input()
+			vim.api.nvim_command("echo '" .. key .. "'")
+			local answer = vim.fn.input()
+			answersQuestions[key] = answer
 		end
+
+		-- Вернуться в редактор
+		vim.api.nvim_command("wincmd k")
 
 		-- Проверяем существование директории и создаем, если необходимо
 		if not self:dirExists(self.DIRNAME) then
